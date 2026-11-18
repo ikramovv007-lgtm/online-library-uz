@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library — Zamonaviy Onlayn Kutubxona</title>
+    <!-- Google Fonts: Plus Jakarta Sans, Inter & Merriweather (Kitob o'qish uchun) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-main: #090A09;
+            --bg-card: #121412;
+            --bg-elevated: #191C19;
+            --border-color: #242924;
+            --neon: #7CE838;
+            --neon-hover: #8DF54A;
+            --text-main: #FFFFFF;
+            --text-muted: #9BA19B;
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-book: 'Merriweather', serif;
+        }
+
+        body.light-mode {
+            --bg-main: #F4F6F4;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #E8ECE8;
+            --border-color: #D5DDD5;
+            --text-main: #111411;
+            --text-muted: #555E55;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .neon-text { color: var(--neon); }
+        .neon-icon { color: var(--neon); width: 28px; height: 28px; }
+
+        /* BUTTONS */
+        .btn-neon {
+            background-color: var(--neon);
+            color: #090A09;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 11px 22px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-neon:hover {
+            background-color: var(--neon-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 232, 56, 0.3);
+        }
+
+        .btn-neon i { width: 16px; height: 16px; }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 11px 22px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        .btn-outline i { width: 16px; height: 16px; }
+
+        /* NAVBAR */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(9, 10, 9, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 5px;
+            border-radius: 999px;
+            gap: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 999px;
+            transition: 0.25s;
+        }
+
+        .nav-link i { width: 16px; height: 16px; }
+        .nav-link:hover { color: var(--text-main); }
+
+        .nav-link.active {
+            background-color: var(--neon);
+            color: #090A09;
+            font-weight: 600;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 2px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 0;
+            width: 0;
+            outline: none;
+            font-size: 14px;
+            transition: width 0.3s ease, padding 0.3s ease;
+        }
+
+        .search-box.open input {
+            width: 180px;
+            padding: 0 12px;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        .icon-btn i { width: 17px; height: 17px; }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            min-height: 490px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1800&q=80');
+            background-size: cover;
+            background-position: center right;
+            filter: brightness(0.75);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #090A09 32%, rgba(9, 10, 9, 0.85) 55%, rgba(9, 10, 9, 0.15) 100%),
+                        linear-gradient(180deg, rgba(9,10,9,0.4) 0%, rgba(9,10,9,0) 40%, #090A09 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 50px 24px 70px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(25, 28, 25, 0.85);
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            color: #E2E6E2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(36px, 5vw, 60px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 18px;
+            color: #FFFFFF;
+        }
+
+        .hero-text p {
+            color: #B4BBB4;
+            font-size: 16px;
+            margin-bottom: 28px;
+            max-width: 480px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .hero-curve {
+            position: absolute;
+            left: 34%;
+            top: 30px;
+            width: 240px;
+            height: 320px;
+            pointer-events: none;
+        }
+
+        /* STATS BAR */
+        .stats-wrapper {
+            position: relative;
+            z-index: 5;
+            margin-top: -36px;
+        }
+
+        .stats-bar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 22px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            color: var(--neon);
+            width: 34px;
+            height: 34px;
+        }
+
+        .stat-item h3 {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .stat-item p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .stat-divider {
+            width: 1px;
+            height: 44px;
+            background: var(--border-color);
+        }
+
+        /* BOOKS SECTION */
+        .books-section {
+            padding: 64px 24px 40px;
+        }
+
+        .section-subtitle {
+            color: var(--neon);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .header-left h2 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .filter-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .pill:hover {
+            border-color: var(--neon);
+            color: var(--text-main);
+        }
+
+        .pill.active {
+            background: var(--neon);
+            border-color: var(--neon);
+            color: #090A09;
+            font-weight: 600;
+        }
+
+        /* BOOKS GRID */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 18px;
+        }
+
+        .book-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(124, 232, 56, 0.5);
+        }
+
+        .fav-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: rgba(18, 20, 18, 0.75);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 3;
+            transition: 0.2s;
+        }
+
+        .fav-btn:hover, .fav-btn.liked {
+            color: #FF4D4D;
+            border-color: #FF4D4D;
+        }
+
+        .fav-btn.liked svg { fill: #FF4D4D; }
+
+        .book-cover {
+            width: 100%;
+            height: 175px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            padding-top: 6px;
+        }
+
+        .book-cover img {
+            height: 165px;
+            width: 112px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .book-title {
+            font-family: var(--font-heading);
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .book-author {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .book-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .rating span.star { color: #FACC15; }
+        .rating span.reviews { color: var(--text-muted); font-weight: 400; }
+
+        .read-btn {
+            background: transparent;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 11px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+
+        .read-btn:hover {
+            background: var(--neon);
+            color: #090A09;
+        }
+
+        /* PROMO BANNER */
+        .promo-section {
+            padding: 20px 24px 60px;
+        }
+
+        .promo-banner {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            min-height: 140px;
+        }
+
+        .promo-image {
+            position: relative;
+            width: 32%;
+            height: 145px;
+            flex-shrink: 0;
+        }
+
+        .promo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .promo-gradient {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 40%, var(--bg-card) 100%);
+        }
+
+        .promo-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 36px 24px 10px;
+            gap: 24px;
+        }
+
+        .promo-content h2 {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .promo-divider {
+            width: 1px;
+            height: 54px;
+            background: var(--neon);
+            opacity: 0.6;
+        }
+
+        .promo-content p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid var(--border-color);
+            padding: 24px 0;
+            background: var(--bg-main);
+        }
+
+        .footer-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-features {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 28px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer-features span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-features i {
+            width: 16px;
+            height: 16px;
+            color: var(--text-muted);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .social-links a {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .social-links a:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        .social-links i { width: 15px; height: 15px; }
+
+        /* INTERACTIVE BOOK READER MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .modal.show { display: flex; }
+
+        .reader-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 96vw;
+            max-width: 1050px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.85);
+        }
+
+        .reader-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .reader-title-info h3 {
+            font-family: var(--font-heading);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .reader-title-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .reader-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .font-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .font-btn:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        .reader-body {
+            flex: 1;
+            padding: 30px 24px;
+            overflow-y: auto;
+            background: var(--bg-main);
+            transition: background 0.3s;
+        }
+
+        .reader-body.sepia-theme {
+            background: #F4ECD8;
+        }
+
+        .reader-body.sepia-theme .book-page {
+            background: #FBF5E6;
+            color: #2B241A;
+            border-color: #DFD3B8;
+        }
+
+        .reader-body.sepia-theme .book-page p {
+            color: #2B241A;
+        }
+
+        .book-page {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 40px 48px;
+            max-width: 820px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .book-page h4 {
+            color: var(--neon);
+            font-size: 22px;
+            margin-bottom: 20px;
+            font-family: var(--font-heading);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .reader-body.sepia-theme .book-page h4 {
+            color: #2D6A1E;
+            border-bottom-color: #DFD3B8;
+        }
+
+        .book-page p {
+            font-family: var(--font-book);
+            font-size: 17px;
+            line-height: 1.9;
+            color: #E2E6E2;
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+
+        .login-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            max-width: 420px;
+            width: 100%;
+            padding: 28px;
+            position: relative;
+        }
+
+        .close-modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .close-modal:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .books-grid { grid-template-columns: repeat(3, 1fr); }
+            .hero-curve { display: none; }
+        }
+
+        @media (max-width: 900px) {
+            .nav-pill { display: none; }
+            .promo-banner { flex-direction: column; }
+            .promo-image { width: 100%; height: 160px; }
+            .promo-gradient { background: linear-gradient(180deg, transparent 40%, var(--bg-card) 100%); }
+            .promo-content { flex-direction: column; align-items: flex-start; padding: 20px; }
+            .promo-divider { display: none; }
+            .book-page { padding: 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .books-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-bar { flex-direction: column; gap: 20px; align-items: flex-start; padding: 24px; }
+            .stat-divider { width: 100%; height: 1px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <i data-lucide="book-open" class="neon-icon"></i>
+                <span>Library</span>
+            </a>
+
+            <nav class="nav-pill">
+                <a href="#" class="nav-link active"><i data-lucide="home"></i> Bosh sahifa</a>
+                <a href="#books" class="nav-link"><i data-lucide="book"></i> Kitoblar</a>
+                <a href="#favorites" class="nav-link" id="fav-nav-btn"><i data-lucide="heart"></i> Sevimlilar (<span id="fav-count">0</span>)</a>
+                <a href="#about" class="nav-link"><i data-lucide="info"></i> Biz haqimizda</a>
+            </nav>
+
+            <div class="nav-actions">
+                <div class="search-box" id="search-box">
+                    <input type="text" id="search-input" placeholder="Kitob yoki muallif...">
+                    <button class="icon-btn" id="search-toggle" title="Qidirish">
+                        <i data-lucide="search"></i>
+                    </button>
+                </div>
+                <button class="icon-btn" id="theme-toggle" title="Mavzuni o'zgartirish">
+                    <i data-lucide="moon"></i>
+                </button>
+                <button class="btn-neon" onclick="openLoginModal()">
+                    <i data-lucide="user"></i> Kirish
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="badge">
+                    <span class="star">⭐</span> Bilim — eng katta boylik
+                </div>
+                <h1>Har bir kitobda <br> yangi <span class="neon-text">dunyo.</span></h1>
+                <p>Minglab kitoblar, cheksiz bilim va yangi g‘oyalar. <br> O‘zingiz uchun kerakli kitobni toping.</p>
+                
+                <div class="hero-buttons">
+                    <a href="#books" class="btn-neon">
+                        <i data-lucide="book-open"></i> Kitoblarni ko‘rish <i data-lucide="arrow-right"></i>
+                    </a>
+                    <a href="#about" class="btn-outline">
+                        <i data-lucide="info"></i> Biz haqimizda
+                    </a>
+                </div>
+            </div>
+
+            <svg class="hero-curve" viewBox="0 0 250 300" fill="none">
+                <path d="M240 10 C 120 30, 80 220, 10 290" stroke="#7CE838" stroke-width="1.5" stroke-opacity="0.6"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <section class="container stats-wrapper">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <i data-lucide="book-open" class="stat-icon"></i>
+                <div>
+                    <h3>1,200+</h3>
+                    <p>Elektron kitoblar</p>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <i data-lucide="users" class="stat-icon"></i>
+                <div>
+                    <h3>35+</h3>
+                    <p>Kitob kategoriyalari</p>
+                </div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <i data-lucide="zap" class="stat-icon"></i>
+                <div>
+                    <h3>24/7</h3>
+                    <p>Doimiy foydalanish</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR BOOKS SECTION -->
+    <section class="container books-section" id="books">
+        <span class="section-subtitle">KATEGORIYALAR</span>
+        
+        <div class="section-header">
+            <div class="header-left">
+                <h2>Mashhur kitoblar</h2>
+                <div class="filter-pills" id="category-filters">
+                    <button class="pill active" data-category="all">Barchasi</button>
+                    <button class="pill" data-category="Fantastika">Fantastika</button>
+                    <button class="pill" data-category="Psixologiya">Psixologiya</button>
+                    <button class="pill" data-category="Dasturlash">Dasturlash</button>
+                    <button class="pill" data-category="Tarix">Tarix</button>
+                    <button class="pill" data-category="Ilm-fan">Ilm-fan</button>
+                    <button class="pill" data-category="Boshqalar">Boshqalar</button>
+                </div>
+            </div>
+            <button class="btn-outline small-btn" onclick="resetFilters()">
+                Barchasi <i data-lucide="arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="books-grid" id="books-grid"></div>
+    </section>
+
+    <!-- PROMO BANNER -->
+    <section class="container promo-section" id="about">
+        <div class="promo-banner">
+            <div class="promo-image">
+                <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=600&q=80" alt="Kitob o'qiyotgan inson">
+                <div class="promo-gradient"></div>
+            </div>
+            
+            <div class="promo-content">
+                <h2>Kitob — bu faqat bilim emas, <br> balki yangi <span class="neon-text">imkoniyatdir.</span></h2>
+                <div class="promo-divider"></div>
+                <p>Bugun o‘qigan kitobingiz <br> ertaga hayotingizni o‘zgartirishi mumkin.</p>
+                <a href="#books" class="btn-neon">
+                    Boshlash <i data-lucide="arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <a href="#" class="logo">
+                <i data-lucide="book-open" class="neon-icon"></i>
+                <span>Library</span>
+            </a>
+
+            <div class="footer-features">
+                <span><i data-lucide="zap"></i> Tez va qulay</span>
+                <span><i data-lucide="monitor-smartphone"></i> Har qanday qurilmada</span>
+                <span><i data-lucide="shield-check"></i> Xavfsiz va ishonchli</span>
+                <span><i data-lucide="bell"></i> Doimiy yangiliklar</span>
+            </div>
+
+            <div class="social-links">
+                <a href="#" aria-label="Telegram"><i data-lucide="send"></i></a>
+                <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+                <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MUKAMMAL KITOB O'QISH OYNASI (XATOSIZ VA QULAY READER) -->
+    <div class="modal" id="reader-modal">
+        <div class="reader-modal-content">
+            <div class="reader-header">
+                <div class="reader-title-info">
+                    <h3 id="reader-book-title">Kitob nomi</h3>
+                    <p id="reader-book-author">Muallif</p>
+                </div>
+                <div class="reader-controls">
+                    <button class="font-btn" onclick="changeFontSize(-1)" title="Shriftni kichraytirish">A-</button>
+                    <button class="font-btn" onclick="changeFontSize(1)" title="Shriftni kattalashtirish">A+</button>
+                    <button class="font-btn" onclick="toggleSepiaMode()" title="Kitob varag'i rangi">📖 Kitob foni</button>
+                    <a id="reader-external-link" href="#" target="_blank" class="btn-neon" style="padding: 8px 16px; font-size: 13px;">
+                        <i data-lucide="book-open"></i> Open Library'da to'liq o'qish
+                    </a>
+                    <button class="close-modal" onclick="closeReader()" title="Yopish">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="reader-body" id="reader-body-container">
+                <div class="book-page">
+                    <h4 id="reader-content-heading">1-bob. Kirish qismi</h4>
+                    <div id="reader-paragraphs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KIRISH MODALI -->
+    <div class="modal" id="login-modal">
+        <div class="login-modal-content">
+            <button class="close-modal" style="position:absolute; top:16px; right:16px;" onclick="closeLoginModal()">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 style="font-family:var(--font-heading); margin-bottom:16px;">Tizimga kirish</h2>
+            <input type="email" placeholder="Elektron pochta" style="width:100%; padding:12px; margin-bottom:12px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-main); outline: none;">
+            <input type="password" placeholder="Parol" style="width:100%; padding:12px; margin-bottom:18px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-main); color:var(--text-main); outline: none;">
+            <button class="btn-neon" style="width:100%; justify-content:center;" onclick="closeLoginModal()">Kirish</button>
+        </div>
+    </div>
+
+    <script>
+        // 36 ta kitob: har biriga batafsil o'qish matni va Open Library'ning 100% ishlaydigan qidiruv/o'qish havolasi biriktirilgan
+        const booksData = [
+            { id: 1, title: "Buyuk Getsbi", author: "F. S. Fitsjerald", category: "Boshqalar", rating: "4.8", reviews: "12k", cover: "https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg", query: "The Great Gatsby F. Scott Fitzgerald", paragraphs: [
+                "O‘sha paytlar yoshroq va ko‘ngilchanroq bo‘lgan kezlarimda dadam menga bir maslahat bergandiki, uni shu kungacha ham esimdan chiqarmayman.",
+                "— Kimnidir qoralashga og‘iz juftlasang, — degandi dadam, — dunyodagi hamma odamlar ham seningdek imkoniyatga ega emasligini yodda tut.",
+                "U boshqa hech narsa demadi, lekin biz har doim bir-birimizni so‘zsiz tushunardik. Shundan beri men odamlar haqida shoshilinch xulosa chiqarmaslikka harakat qilaman. Bu odatim menga ko‘plab g‘alati fe’l-atvorli kishilarning sirdoshiga aylanishimga sabab bo‘ldi."
+            ]},
+            { id: 2, title: "1984", author: "Jorj Oruell", category: "Fantastika", rating: "4.9", reviews: "15k", cover: "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg", query: "1984 George Orwell", paragraphs: [
+                "Aprildagi sovuq va oftobli kunlarning biri edi, soat o‘n ikkidan o‘n daqiqa o‘tganda minoradagi soatlar o‘n uch marta zarba berdi. Uinston Smit sovuq shamoldan qochish uchun iyagini ko‘kragiga bosgancha, «G‘alaba» turar-joy binosining shisha eshigidan tezda ichkariga kirdi.",
+                "Yo‘lakdan qaynatilgan karam va eski gilamlarning hidi anqirdi. Devorga yopishtirilgan ulkan plakatda qirq besh yoshlardagi qora mo‘ylovli kishining yuzi aks etgan edi. Plakat ostiga yirik harflar bilan: «KATTA OG‘A SENI KUZATMOQDA», deb yozib qo‘yilgandi."
+            ]},
+            { id: 3, title: "Atom odatlar", author: "Jeyms Klir", category: "Psixologiya", rating: "4.9", reviews: "20k", cover: "https://covers.openlibrary.org/b/isbn/9780735211292-L.jpg", query: "Atomic Habits James Clear", paragraphs: [
+                "Muvaffaqiyatga erishish uchun hayotingizni birdaniga tubdan o‘zgartirib yuborish shart emas. Biz ko‘pincha katta natijalar katta harakatlarni talab qiladi deb o‘ylaymiz, aslida esa kichik o‘zgarishlar eng kuchli natijani beradi.",
+                "Agar siz har kuni o‘z ustingizda atigi 1 foizga yaxshilanib borsangiz, bir yil oxirida avvalgi holatingizdan 37 barobar kuchliroq bo‘lasiz. Odatlar — bu o‘z-o‘zini takomillashtirishning murakkab foizidir."
+            ]},
+            { id: 4, title: "Dyun", author: "Frank Herbert", category: "Fantastika", rating: "4.8", reviews: "18k", cover: "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg", query: "Dune Frank Herbert", paragraphs: [
+                "Kaladan sayyorasidan ko‘chib o‘tishdan bir hafta oldin, cho‘l sayyorasi Arrakisga tayyorgarlik jarayoni qizg‘in palla olgandi. Pol Atreid qasrning baland tosh devorlaridan tashqariga, dengiz to‘lqinlariga nazar tashlab turardi.",
+                "Arrakis — koinotdagi eng xavfli va shu bilan birga eng qimmatbaho sayyora. Faqat shu yerda inson umrini uzaytiruvchi va yulduzlararo parvozlarni ta’minlovchi noyob modda — «Melanj» qazib olinadi."
+            ]},
+            { id: 5, title: "Lean Startup", author: "Eric Ries", category: "Dasturlash", rating: "4.7", reviews: "11k", cover: "https://covers.openlibrary.org/b/isbn/9780307887894-L.jpg", query: "The Lean Startup Eric Ries", paragraphs: [
+                "Zamonaviy startaplar va IT mahsulotlarni yaratishda eng katta xato — mijozlarga kerak bo‘lmagan mahsulot ustida oylab va yillab ishlashdir.",
+                "Tejamkor startap (Lean Startup) metodologiyasi «Qurish — O‘lchash — O‘rganish» (Build-Measure-Learn) sikliga asoslanadi. Avval eng sodda ishchi versiyani (MVP) yarating va foydalanuvchilarning haqiqiy fikrini bilib oling."
+            ]},
+            { id: 6, title: "Sapiens", author: "Yuval Noah Harari", category: "Tarix", rating: "4.8", reviews: "14k", cover: "https://covers.openlibrary.org/b/isbn/9780062316097-L.jpg", query: "Sapiens Yuval Noah Harari", paragraphs: [
+                "Taxminan 13,5 milliard yil avval Katta Portlash natijasida materiya, energiya, vaqt va fazo paydo bo‘ldi. Ushbu fundamental unsurlarning hikoyasi fizika deb ataladi.",
+                "Taxminan 70 ming yil avval esa Homo sapiens turiga mansub mavjudotlar o‘ziga xos tafakkur inqilobini boshdan kechirdilar. Ularning birgalikda hamkorlik qilish va umumiy g‘oyalar atrofida birlashish qobiliyati insoniyatni yer yuzining hukmdoriga aylantirdi."
+            ]},
+
+            { id: 7, title: "Alkimyogar", author: "Paulo Koelyo", category: "Psixologiya", rating: "4.8", reviews: "27k", cover: "https://covers.openlibrary.org/b/isbn/9780061122415-L.jpg", query: "The Alchemist Paulo Coelho", paragraphs: [
+                "Yigitning ismi Santyago edi. U suruvini eski tashlandiq cherkov hovlisiga haydab kirganida qorong‘i tusha boshlagandi. Cherkov tomi allaqachon qulab tushgan, o‘rnida ulkan chinor daraxti o‘sib chiqqandi.",
+                "Santyago tushida Misr ehromlari yonida yashiringan xazinani ko‘radi. U o‘z qo‘ylarini sotib, o‘z taqdiri va qalbi ortidan uzoq safarga otlanishga qaror qiladi. Zero, biror narsani chin dildan istasang, butun koinot senga yordamga shoshiladi."
+            ]},
+            { id: 8, title: "Kichkina shahzoda", author: "Antuan de Sent-Exuperi", category: "Boshqalar", rating: "5.0", reviews: "35k", cover: "https://covers.openlibrary.org/b/isbn/9780156012195-L.jpg", query: "The Little Prince Antoine de Saint-Exupery", paragraphs: [
+                "Olti yoshligimda bir kitobda ajoyib suratni ko‘rib qolgandim. Unda bo‘g‘ma ilon yirtqich hayvonni yutib yuborayotgani tasvirlangandi.",
+                "Kattalar hech qachon o‘zlari biror narsani tushuna olmaydilar, bolalar esa ularga doimo tushuntirib berishdan charchashmaydi. Eng muhim narsani ko‘z bilan ko‘rib bo‘lmaydi — uni faqat yurak bilan ko‘rish mumkin."
+            ]},
+            { id: 9, title: "Jinoyat va jazo", author: "F. Dostoevskiy", category: "Boshqalar", rating: "4.9", reviews: "19k", cover: "https://covers.openlibrary.org/b/isbn/9780140449136-L.jpg", query: "Crime and Punishment Fyodor Dostoevsky", paragraphs: [
+                "Iyul oyining o‘rtalarida, juda issiq kunlarning birida, kechqurunga yaqin bir yigit S. tor ko‘chasida o‘zi ijarada turadigan kichkina xonadan chiqib, sekin-asta K. ko‘prigi tomon yo‘l oldi.",
+                "Uning boshida g‘alati va qo‘rqinchli fikrlar girdobi charx urardi. Inson vijdoni oldidagi javobgarlik har qanday qonuniy jazodan ham og‘irroq ekanligini Raskolnikov o‘z hayoti misolida anglab yetadi."
+            ]},
+            { id: 10, title: "Clean Code", author: "Robert C. Martin", category: "Dasturlash", rating: "4.9", reviews: "22k", cover: "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg", query: "Clean Code Robert C. Martin", paragraphs: [
+                "Dasturchi vaqtining 80 foizini yangi kod yozishga emas, balki eski kodni o‘qish va tushunishga sarflaydi. Shuning uchun toza kod yozish — bu shunchaki chiroy emas, balki zaruratdir.",
+                "O‘zgaruvchilar va funksiyalarga shunday aniq nom beringki, kodni o‘qigan odam xuddi yaxshi yozilgan kitobni o‘qiyotgandek barcha mantiqni darhol tushunsin."
+            ]},
+            { id: 11, title: "JavaScript: The Good Parts", author: "Douglas Crockford", category: "Dasturlash", rating: "4.6", reviews: "8k", cover: "https://covers.openlibrary.org/b/isbn/9780596517748-L.jpg", query: "JavaScript The Good Parts Douglas Crockford", paragraphs: [
+                "JavaScript tili juda qisqa vaqt ichida yaratilgan bo‘lishiga qaramay, unda ajoyib g‘oyalar mujassam: funksiyalarning birinchi darajali obyekt ekanligi, dinamik obyektlar va prototiplar merosi.",
+                "Tilning zaif tomonlaridan chetlab o‘tib, faqat eng kuchli qismlaridan foydalanish orqali mukammal veb-ilovalar qurish mumkin."
+            ]},
+            { id: 12, title: "Molxona", author: "Jorj Oruell", category: "Fantastika", rating: "4.7", reviews: "16k", cover: "https://covers.openlibrary.org/b/isbn/9780451526342-L.jpg", query: "Animal Farm George Orwell", paragraphs: [
+                "«Manor» fermasining egasi mister Jons kechasi tovuqxona eshiklarini qulfladi, biroq mastligi sababli tuynuklarni yopishni unutib qo‘ydi.",
+                "Barcha hayvonlar yig‘ilib, odamlar zulmidan qutulish va o‘zlarining tenglikka asoslangan jamiyatini qurishga qaror qilishdi. Ammo hokimiyat tepasiga kelgan cho‘chqalar asta-sekin qoidalarni o‘zgartira boshladilar..."
+            ]},
+
+            { id: 13, title: "Stiv Jobs", author: "Uolter Ayzekson", category: "Tarix", rating: "4.8", reviews: "17k", cover: "https://covers.openlibrary.org/b/isbn/9781451648539-L.jpg", query: "Steve Jobs Walter Isaacson", paragraphs: [
+                "Stiv Jobsning hayoti — bu ijodkorlik, texnologiya va mukammallikka intilish haqidagi zamonaviy doston. U garajda boshlagan kompaniyani dunyodagi eng qimmat brendga aylantirdi.",
+                "«Dizayn — bu shunchaki narsaning tashqi ko‘rinishi emas. Dizayn — uning qanday ishlashidir», — der edi Jobs."
+            ]},
+            { id: 14, title: "Kosmos", author: "Karl Sagan", category: "Ilm-fan", rating: "4.9", reviews: "13k", cover: "https://covers.openlibrary.org/b/isbn/9780345539434-L.jpg", query: "Cosmos Carl Sagan", paragraphs: [
+                "Kosmos — bu mavjud bo‘lgan, mavjud bo‘ladigan va shu paytgacha mavjud bo‘lgan hamma narsadir. Koinotning ulug‘vorligini anglash insonga o‘z hayotiga yangicha nazar bilan qarash imkonini beradi.",
+                "Bizning tanamizdagi temir, qonimizdagi kislorod va DNKimizdagi uglerod milliardlab yillar avval so‘ngan yulduzlar qa’rida hosil bo‘lgan."
+            ]},
+            { id: 15, title: "Vaqtning qisqacha tarixi", author: "Stiven Xoking", category: "Ilm-fan", rating: "4.9", reviews: "24k", cover: "https://covers.openlibrary.org/b/isbn/9780553380163-L.jpg", query: "A Brief History of Time Stephen Hawking", paragraphs: [
+                "Koinot qayerdan paydo bo‘lgan? Uning boshlanishi bormi va qachondir oxiri bo‘ladimi? Vaqt faqat oldinga qarab oqadimi?",
+                "Stiven Xoking ushbu asarda qora tuynuklar, Katta Portlash va nisbiylik nazariyasini har bir o‘quvchi tushuna oladigan sodda va qiziqarli tilda bayon qiladi."
+            ]},
+            { id: 16, title: "Boy ota, kambag'al ota", author: "Robert Kiyosaki", category: "Psixologiya", rating: "4.8", reviews: "31k", cover: "https://covers.openlibrary.org/b/isbn/9781612680194-L.jpg", query: "Rich Dad Poor Dad Robert Kiyosaki", paragraphs: [
+                "Mening ikki otam bor edi: biri boy, ikkinchisi kambag‘al. Biri oliy ma’lumotli professor, ikkinchisi esa maktabni ham tugatmagan, ammo o‘z biznesini qurgan tadbirkor edi.",
+                "Kambag‘al odamlar pul uchun ishlaydi, boy odamlar esa pulni o‘zlari uchun ishlashga majbur qiladi."
+            ]},
+            { id: 17, title: "Usta va Margarita", author: "Mixail Bulgakov", category: "Fantastika", rating: "4.9", reviews: "21k", cover: "https://covers.openlibrary.org/b/isbn/9780679725800-L.jpg", query: "The Master and Margarita Mikhail Bulgakov", paragraphs: [
+                "Bahor kunlarining birida, kun botishiga yaqin, Moskvadagi Patriarx ko‘llari bo‘yida ikki nafar fuqaro paydo bo‘ldi. Ularning biri adabiy jurnal muharriri Berlioz, ikkinchisi esa yosh shoir Ivan Bezdomniy edi.",
+                "To‘satdan ularning yoniga kelib o‘tirgan notanish xorijlik professor Voland butun shahar hayotini ostin-ustun qilib yuboradi..."
+            ]},
+            { id: 18, title: "Sherlok Xolms sarguzashtlari", author: "Artur Konan Doyl", category: "Boshqalar", rating: "4.9", reviews: "28k", cover: "https://covers.openlibrary.org/b/isbn/9780140439076-L.jpg", query: "The Adventures of Sherlock Holmes Arthur Conan Doyle", paragraphs: [
+                "Sherlok Xolms nazarida Iren Adler har doim «O‘sha Ayol» bo‘lib qoldi. Uning o‘tkir mantiqiy tahlili va eng mayda detallarga ham e’tibor berishi har qanday chigal jinoyatni ochishga yordam berardi.",
+                "— Siz ko‘rasiz, lekin kuzatmaysiz, Vatson. Bularning orasida katta farq bor, — der edi Xolms."
+            ]},
+
+            { id: 19, title: "Python Crash Course", author: "Eric Matthes", category: "Dasturlash", rating: "4.9", reviews: "25k", cover: "https://covers.openlibrary.org/b/isbn/9781593279288-L.jpg", query: "Python Crash Course Eric Matthes", paragraphs: [
+                "Python — o‘rganish uchun eng qulay va shu bilan birga sun’iy intellekt, veb-dasturlash hamda ma’lumotlar tahlilida eng qudratli dasturlash tilidir.",
+                "Ushbu qo‘llanma o‘zgaruvchilar, ro‘yxatlar va funksiyalardan boshlab, haqiqiy o‘yinlar va veb-ilovalar yaratishgacha bo‘lgan barcha bosqichlarni qamrab oladi."
+            ]},
+            { id: 20, title: "Eloquent JavaScript", author: "Marijn Haverbeke", category: "Dasturlash", rating: "4.8", reviews: "16k", cover: "https://covers.openlibrary.org/b/isbn/9781593279509-L.jpg", query: "Eloquent JavaScript Marijn Haverbeke", paragraphs: [
+                "Dasturlash — bu kompyuterga nima qilish kerakligini tushuntirish san’ati. Yaxshi dastur nafaqat muammoni hal qiladi, balki ichki tuzilishi bilan ham go‘zal bo‘ladi.",
+                "Asinxron dasturlash, DOM bilan ishlash va funksional dasturlash tamoyillari zamonaviy vebning asosidir."
+            ]},
+            { id: 21, title: "G'urur va andisha", author: "Jeyn Ostin", category: "Boshqalar", rating: "4.8", reviews: "29k", cover: "https://covers.openlibrary.org/b/isbn/9780141439518-L.jpg", query: "Pride and Prejudice Jane Austen", paragraphs: [
+                "Hamma e’tirof etgan haqiqat shuki, katta boylikka ega bo‘lgan bo‘ydoq yigit albatta uylanishga muhtoj bo‘ladi.",
+                "Elizabet Bennet va mister Darsi o‘rtasidagi dastlabki sovuqqonlik va g‘urur vaqt o‘tishi bilan chuqur hurmat hamda chinakam muhabbatga aylanadi."
+            ]},
+            { id: 22, title: "Jeyn Eyr", author: "Sharlotta Bronte", category: "Boshqalar", rating: "4.8", reviews: "22k", cover: "https://covers.openlibrary.org/b/isbn/9780141441146-L.jpg", query: "Jane Eyre Charlotte Bronte", paragraphs: [
+                "O‘sha kuni sayr qilishning sira iloji yo‘q edi. Ertalab barglari to‘kilgan butalar orasida bir soatcha aylandik, ammo tushdan keyin sovuq shamol va tinimsiz yomg‘ir boshlandi.",
+                "Jeyn Eyrning bolalikdagi mashaqqatlari va Tornfild qasridagi sirli voqealar inson qadr-qimmati haqidagi o‘lmas qissani tashkil etadi."
+            ]},
+            { id: 23, title: "Graf Monte-Kristo", author: "Aleksandr Dyuma", category: "Tarix", rating: "4.9", reviews: "33k", cover: "https://covers.openlibrary.org/b/isbn/9780140449266-L.jpg", query: "The Count of Monte Cristo Alexandre Dumas", paragraphs: [
+                "1815-yil 24-fevralda Notr-Dam de la Gard kuzatuvchisi «Faraon» uch machtali kemasining Marsel portiga kirib kelayotgani haqida xabar berdi.",
+                "Tuhmat bilan If qal’asiga tashlangan yosh dengizchi Edmond Dantes o‘n to‘rt yildan so‘ng ulkan xazina egasi va qudratli Graf Monte-Kristo qiyofasida qaytib keladi."
+            ]},
+            { id: 24, title: "Uch mushketyor", author: "Aleksandr Dyuma", category: "Tarix", rating: "4.8", reviews: "26k", cover: "https://covers.openlibrary.org/b/isbn/9780140449266-L.jpg", query: "The Three Musketeers Alexandre Dumas", paragraphs: [
+                "1625-yil aprel oyining birinchi dushanbasida Meng shaharchasida xuddi o‘rta asrlardagidek shovqin-suron ko‘tarildi.",
+                "Yosh gaskoniyalik d’Artanyan va uning uch sodiq do‘sti Atos, Portos hamda Aramisning «Bir kishi hamma uchun, hamma bir kishi uchun!» shiori ostidagi sarguzashtlari boshlanadi."
+            ]},
+
+            { id: 25, title: "Farengeyt 451", author: "Rey Bredberi", category: "Fantastika", rating: "4.8", reviews: "19k", cover: "https://covers.openlibrary.org/b/isbn/9781451673319-L.jpg", query: "Fahrenheit 451 Ray Bradbury", paragraphs: [
+                "Yoqish — zavq bag‘ishlardi. Narsalarning qorayib, kulga aylanishini ko‘rish o‘zgacha zavq berardi. Farengeyt bo‘yicha 451 daraja — kitob qog‘ozi alangalanib yonadigan harorat.",
+                "O‘t o‘chiruvchi Gay Monteg yong‘inlarni o‘chirish o‘rniga kitoblarni yoqish bilan shug‘ullanardi, toki bir kuni u kitoblar ichida yashiringan haqiqatni kashf etmaguncha..."
+            ]},
+            { id: 26, title: "Ajoyib yangi dunyo", author: "Oldos Xaksli", category: "Fantastika", rating: "4.7", reviews: "17k", cover: "https://covers.openlibrary.org/b/isbn/9780060850524-L.jpg", query: "Brave New World Aldous Huxley", paragraphs: [
+                "Markaziy London inkubatori va tarbiya markazi — atigi o‘ttiz to‘rt qavatli kulrang bino. Kiraverishda Jahon Davlatining shiori yozilgan: «Jamoaviylik, Bir xillik, Barqarorlik».",
+                "Insonlar sun’iy ravishda yetishtiriladigan va hamma narsa oldindan dasturlashtirilgan dunyoda haqiqiy erkinlik qanday bo‘ladi?"
+            ]},
+            { id: 27, title: "Ta'sir o'tkazish psixologiyasi", author: "Robert Chaldini", category: "Psixologiya", rating: "4.9", reviews: "21k", cover: "https://covers.openlibrary.org/b/isbn/9780061241895-L.jpg", query: "Influence Robert Cialdini", paragraphs: [
+                "Nima uchun ba’zi odamlar o‘z so‘zini boshqalarga osonlikcha o‘tkaza oladilar? Inson ongida qaror qabul qilishni boshqaruvchi 6 ta asosiy psixologik tamoyil mavjud.",
+                "Ushbu qonuniyatlarni bilish sizga ham muzokaralarda muvaffaqiyat qozonishga, ham manipulyatsiyalardan himoyalanishga yordam beradi."
+            ]},
+            { id: 28, title: "Do'st orttirish sirlari", author: "Deyl Karnegi", category: "Psixologiya", rating: "4.9", reviews: "38k", cover: "https://covers.openlibrary.org/b/isbn/9780671027032-L.jpg", query: "How to Win Friends and Influence People Dale Carnegie", paragraphs: [
+                "Asal yig‘moqchi bo‘lsangiz, asalari uyasini tepmang. Tanqid qilish — foydasiz mashg‘ulot, chunki u odamni mudofaaga o‘tishga majbur qiladi.",
+                "Odamlarning ismini eslab qoling, ularni samimiy tinglang va har bir insonga o‘zini muhim deb his qilishiga imkon bering."
+            ]},
+            { id: 29, title: "O'ylab top va boy bo'l", author: "Napoleon Xill", category: "Psixologiya", rating: "4.8", reviews: "34k", cover: "https://covers.openlibrary.org/b/isbn/9781585424337-L.jpg", query: "Think and Grow Rich Napoleon Hill", paragraphs: [
+                "Har qanday katta boylik va muvaffaqiyat avvalo inson ongida aniq bir g‘oya sifatida tug‘iladi.",
+                "Kuchli xohish, qat’iy ishonch va hech qachon taslim bo‘lmaslik irodasi har qanday to‘siqni yengib o‘tishga qodir."
+            ]},
+            { id: 30, title: "Raqamli qasr", author: "Den Braun", category: "Fantastika", rating: "4.7", reviews: "23k", cover: "https://covers.openlibrary.org/b/isbn/9780743477116-L.jpg", query: "Digital Fortress Dan Brown", paragraphs: [
+                "Milliy xavfsizlik agentligining eng maxfiy va qudratli shifrlash mashinasi — «Transleytor» buzib bo‘lmaydigan noma’lum kodga duch keladi.",
+                "Kriptograf Syuzan Fletcher ushbu sirli algoritm ortida kim turganini aniqlash uchun vaqt bilan poyga o‘ynashga majbur bo‘ladi."
+            ]},
+
+            { id: 31, title: "Da Vinchi siri", author: "Den Braun", category: "Tarix", rating: "4.8", reviews: "41k", cover: "https://covers.openlibrary.org/b/isbn/9780307474278-L.jpg", query: "The Da Vinci Code Dan Brown", paragraphs: [
+                "Parijdagi Luvr muzeyining bosh kuratori Jak Sonyer tunda sirli ravishda o‘ldirib ketiladi. U o‘limidan oldin polga Leonardo da Vinchining «Vitruviy odami» shaklida yotib, shifrlangan yozuv qoldiradi.",
+                "Professor Robert Lengdon ushbu qadimiy jumboqni yechishga kirishadi."
+            ]},
+            { id: 32, title: "Nisbiylik nazariyasi", author: "Albert Eynshteyn", category: "Ilm-fan", rating: "4.9", reviews: "15k", cover: "https://covers.openlibrary.org/b/isbn/9780486417141-L.jpg", query: "Relativity Albert Einstein", paragraphs: [
+                "Vaqt va fazo mutlaq emas, ular kuzatuvchining harakat tezligiga bog‘liq holda o‘zgaradi. Yorug‘lik tezligi esa koinotdagi eng yuqori va o‘zgarmas chegaradir.",
+                "Ushbu kitobda Eynshteyn o‘zining olamshumul nazariyasini oliy matematikadan yiroq o‘quvchilar uchun ham tushunarli qilib tushuntiradi."
+            ]},
+            { id: 33, title: "Turlarning kelib chiqishi", author: "Charlz Darvin", category: "Ilm-fan", rating: "4.8", reviews: "18k", cover: "https://covers.openlibrary.org/b/isbn/9780451529060-L.jpg", query: "On the Origin of Species Charles Darwin", paragraphs: [
+                "«Bigl» kemasida tabiatshunos sifatida dunyo bo‘ylab sayohat qilganimda, Janubiy Amerika va Galapagos orollaridagi tirik organizmlarning o‘zaro bog‘liqligi meni hayratga soldi.",
+                "Tabiiy tanlanish va atrof-muhitga moslashish tirik tabiat evolyutsiyasining asosiy harakatlantiruvchi kuchidir."
+            ]},
+            { id: 34, title: "Qisqa javoblar", author: "Stiven Xoking", category: "Ilm-fan", rating: "4.9", reviews: "19k", cover: "https://covers.openlibrary.org/b/isbn/9781984819192-L.jpg", query: "Brief Answers to the Big Questions Stephen Hawking", paragraphs: [
+                "Koinotda bizdan boshqa aqlli mavjudotlar bormi? Sun’iy intellekt insoniyatdan o‘zib ketadimi? Biz kelajakda boshqa sayyoralarga ko‘chib o‘ta olamizmi?",
+                "Buyuk fizik Stiven Xoking o‘zining so‘nggi kitobida insoniyat kelajagiga oid eng muhim savollarga lo‘nda va teran javoblar beradi."
+            ]},
+            { id: 35, title: "Pragmatik dasturchi", author: "Endryu Xant", category: "Dasturlash", rating: "4.9", reviews: "17k", cover: "https://covers.openlibrary.org/b/isbn/9780135957059-L.jpg", query: "The Pragmatic Programmer Andrew Hunt", paragraphs: [
+                "Pragmatik dasturchi o‘z kasbiga hunarmand ustadek yondashadi. U doimo yangi texnologiyalarni o‘rganadi, kodni takrorlamaydi (DRY tamoyili) va har bir muammoga moslashuvchan yechim topadi."
+            ]},
+            { id: 36, title: "Choliqushi", author: "Rashod Nuri Guntekin", category: "Boshqalar", rating: "4.9", reviews: "27k", cover: "https://covers.openlibrary.org/b/isbn/9789751026514-L.jpg", query: "Calikusu Resat Nuri Guntekin", paragraphs: [
+                "Bolaligimda juda sho‘x va daraxtlar uchidan tushmaydigan qiz bo‘lganim uchun maktabdagi dugonalarim menga «Choliqushi» deb laqab qo‘yishgandi.",
+                "Feridening Onado‘li qishloqlaridagi o‘qituvchilik faoliyati, xiyonat og‘rig‘i va pok muhabbat tarixi o‘quvchini chuqur hayajonga soladi."
+            ]}
+        ];
+
+        let favorites = [];
+        let currentCategory = "all";
+        let searchQuery = "";
+        let showingOnlyFavorites = false;
+        let currentFontSize = 17;
+
+        const booksGrid = document.getElementById("books-grid");
+        const favCountEl = document.getElementById("fav-count");
+
+        function renderBooks() {
+            let filtered = booksData.filter(book => {
+                const matchesCat = currentCategory === "all" || book.category === currentCategory;
+                const matchesSearch = book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      book.author.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesFav = !showingOnlyFavorites || favorites.includes(book.id);
+                return matchesCat && matchesSearch && matchesFav;
+            });
+
+            if (filtered.length === 0) {
+                booksGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color: var(--text-muted); padding: 40px;">Hech qanday kitob topilmadi.</p>`;
+                return;
+            }
+
+            booksGrid.innerHTML = filtered.map(book => {
+                const isLiked = favorites.includes(book.id);
+                return `
+                    <div class="book-card">
+                        <button class="fav-btn ${isLiked ? 'liked' : ''}" onclick="toggleFavorite(${book.id})" title="Sevimlilarga qo'shish">
+                            <i data-lucide="heart" style="width:15px; height:15px;"></i>
+                        </button>
+                        <div class="book-cover">
+                            <img src="${book.cover}" alt="${book.title}" onerror="this.src='https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=300&q=80'">
+                        </div>
+                        <h3 class="book-title" title="${book.title}">${book.title}</h3>
+                        <p class="book-author">${book.author}</p>
+                        <div class="book-footer">
+                            <div class="rating">
+                                <span class="star">★</span> ${book.rating} <span class="reviews">(${book.reviews})</span>
+                            </div>
+                            <button class="read-btn" onclick="openRealBookReader(${book.id})">
+                                O‘qish <span>→</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            lucide.createIcons();
+        }
+
+        // KITOBNI SAYT ICHIDA OCHISH VA XATOSIZ OPEN LIBRARY HAVOLASI
+        function openRealBookReader(id) {
+            const book = booksData.find(b => b.id === id);
+            if (!book) return;
+
+            document.getElementById("reader-book-title").textContent = book.title;
+            document.getElementById("reader-book-author").textContent = `Muallif: ${book.author} • Kategoriya: ${book.category} • Reyting: ★ ${book.rating}`;
+            document.getElementById("reader-content-heading").textContent = `${book.title} — 1-bob`;
+
+            const paragraphsHtml = book.paragraphs.map(p => `<p style="font-size:${currentFontSize}px">${p}</p>`).join("");
+            document.getElementById("reader-paragraphs").innerHTML = paragraphsHtml;
+
+            // Hech qachon "Item cannot be found" bermaydigan Open Library rasmiy qidiruv/o'qish havolasi
+            const safeOpenLibraryUrl = `https://openlibrary.org/search?q=${encodeURIComponent(book.query)}&mode=ebooks`;
+            document.getElementById("reader-external-link").href = safeOpenLibraryUrl;
+
+            document.getElementById("reader-modal").classList.add("show");
+            document.body.style.overflow = "hidden";
+            lucide.createIcons();
+        }
+
+        function changeFontSize(delta) {
+            currentFontSize = Math.min(24, Math.max(13, currentFontSize + delta));
+            document.querySelectorAll("#reader-paragraphs p").forEach(p => {
+                p.style.fontSize = currentFontSize + "px";
+            });
+        }
+
+        function toggleSepiaMode() {
+            document.getElementById("reader-body-container").classList.toggle("sepia-theme");
+        }
+
+        function closeReader() {
+            document.getElementById("reader-modal").classList.remove("show");
+            document.body.style.overflow = "auto";
+        }
+
+        document.querySelectorAll(".pill").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".pill").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentCategory = btn.dataset.category;
+                showingOnlyFavorites = false;
+                renderBooks();
+            });
+        });
+
+        function resetFilters() {
+            currentCategory = "all";
+            searchQuery = "";
+            showingOnlyFavorites = false;
+            document.getElementById("search-input").value = "";
+            document.querySelectorAll(".pill").forEach(b => b.classList.remove("active"));
+            document.querySelector('.pill[data-category="all"]').classList.add("active");
+            renderBooks();
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+            } else {
+                favorites.push(id);
+            }
+            favCountEl.textContent = favorites.length;
+            renderBooks();
+        }
+
+        document.getElementById("fav-nav-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            showingOnlyFavorites = !showingOnlyFavorites;
+            renderBooks();
+            document.getElementById("books").scrollIntoView();
+        });
+
+        const searchBox = document.getElementById("search-box");
+        const searchInput = document.getElementById("search-input");
+
+        document.getElementById("search-toggle").addEventListener("click", () => {
+            searchBox.classList.toggle("open");
+            if (searchBox.classList.contains("open")) {
+                searchInput.focus();
+            }
+        });
+
+        searchInput.addEventListener("input", (e) => {
+            searchQuery = e.target.value;
+            renderBooks();
+        });
+
+        document.getElementById("theme-toggle").addEventListener("click", () => {
+            document.body.classList.toggle("light-mode");
+        });
+
+        function openLoginModal() {
+            document.getElementById("login-modal").classList.add("show");
+        }
+
+        function closeLoginModal() {
+            document.getElementById("login-modal").classList.remove("show");
+        }
+
+        lucide.createIcons();
+        renderBooks();
+    </script>
+</body>
+</html>
